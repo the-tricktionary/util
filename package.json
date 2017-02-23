@@ -1,0 +1,25 @@
+{
+  "name": "the-tricktionary-util",
+  "version": "0.0.1",
+  "description": "a bunch of cronjobs and daemons for the-tricktionary",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "the-tricktionary/util"
+  },
+  "author": "the Tricktionary",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/the-tricktionary/util/issues"
+  },
+  "homepage": "https://the-tricktionary.com",
+  "dependencies": {
+    "@google-cloud/storage": "^0.7.0",
+    "firebase-admin": "^4.1.1",
+    "mailgun-js": "^0.8.2",
+    "moment": "^2.17.1",
+    "objectdiff": "^1.1.0"
+  }
+}

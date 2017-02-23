@@ -1,5 +1,7 @@
 # Repo Specific
 config/*
+data/**/*
+data/*
 !config/*.example.*
 !**/.keep
 
