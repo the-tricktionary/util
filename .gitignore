@@ -1,6 +1,7 @@
 # Repo Specific
 config/*
 !config/*.example.*
+!**/.keep
 
 # Logs
 logs
