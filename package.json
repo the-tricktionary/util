@@ -21,6 +21,7 @@
     "mailgun-js": "^0.8.2",
     "moment": "^2.17.1",
     "objectdiff": "^1.1.0",
+    "uuid-v4": "^0.1.0",
     "yargs": "^8.0.1"
   }
 }

@@ -4,15 +4,16 @@ var moment  = require("moment");
 var exec    = require("child_process").exec;
 var storage = require('@google-cloud/storage');
 var isolang = require('../data/iso-lang-parse').getLanguageName;
-var argv = require('yargs')
-          .usage('node $0 [-i [locale]|--i18n[=locale]|--locale[=locale]] [-l|--letterpaper] [-d|--detailed] [-h|--help]').wrap(require('yargs').terminalWidth())
-          .alias('i18n', 'locale')
-          .alias('i', 'i18n').describe('i', 'The locale the booklet should be generated with, if passed without argument a list of avilable locales will appear').default('i', 'en')
-          .alias('l', 'letterpaper').boolean('l').describe('l', 'Will output the booklet in lettersized paper, if present')
-          .alias('d', 'detailed')   .boolean('d').describe('d', 'Will include the description of the trick, if present')
-          .alias('v', 'debug')      .boolean('v').describe('v', 'Enables debug mode, will be verbose and won\'t save to db')
-          .alias('h', 'help').help('help')
-          .argv;
+var UUID    = require("uuid-v4");
+var argv    = require('yargs')
+             .usage('node $0 [-i [locale]|--i18n[=locale]|--locale[=locale]] [-l|--letterpaper] [-d|--detailed] [-h|--help]').wrap(require('yargs').terminalWidth())
+             .alias('i18n', 'locale')
+             .alias('i', 'i18n').describe('i', 'The locale the booklet should be generated with, if passed without argument a list of avilable locales will appear').default('i', 'en')
+             .alias('l', 'letterpaper').boolean('l').describe('l', 'Will output the booklet in lettersized paper, if present')
+             .alias('d', 'detailed')   .boolean('d').describe('d', 'Will include the description of the trick, if present')
+             .alias('v', 'debug')      .boolean('v').describe('v', 'Enables debug mode, will be verbose and won\'t save to db')
+             .alias('h', 'help').help('help')
+             .argv;
 var child;
 var papersize;
 var detailed;
@@ -100,8 +101,8 @@ if (typeof argv.i18n == "boolean" && argv.i18n) {
 
     var locale = (locales[argv.i18n] ? argv.i18n : 'en');
     var filename = `booklet-${now}-${papersize}-${locale}${(argv.d ? '-detailed' : '')}`;
-    dlog("creating " + filename);
-    dlog(locale)
+    dlog(`creating ${filename}`);
+    dlog(`locale: ${locale}`)
 
     // construct tex file contents
     var tex = `\\documentclass[12pt]{article}\n
@@ -233,20 +234,21 @@ if (typeof argv.i18n == "boolean" && argv.i18n) {
               if (error === null) {
                 dlog("booklet pdf generated");
                 dlog("uploading booklet pdf to firebase storage")
+                var uuid = UUID();
                 var options = {
-                  destination: 'booklets/' + filename + '.pdf'
+                  destination: 'booklets/' + filename + '.pdf',
+                  metadata: {
+                    firebaseStorageDownloadTokens: uuid
+                  }
                 }
                 bucket.upload('../data/booklets/' + filename + '.pdf', options, function(err, file) {
                   if(!err) {
                     dlog("booklet successfully uploaded");
                     dlog("saving filename to db");
         
-                    if(argv.v) {
-                      dlog("not saving filename in debug mode");
-                      process.exit();
-                    } else {
-                      db.ref("/booklets/latest/" + papersize + (argv.d ? "detailed" : "")).set(filename + ".pdf", function(error) { if(error) { proccess.exit(1);} else { dlog("filename for latest updated in db"); process.exit() }})
-                    }
+                    var sfu = db.ref(`/booklets/latest/${locale}/${papersize}${(argv.d ? 'detailed' : '')}`).set(`https://firebasestorage.googleapis.com/v0/b/${bucket.name}/o/${encodeURIComponent(file.name)}?alt=media&token=${uuid}`, (error) => { if(error) { process.exit(1) } else { dlog("file download path saved"); } })
+                    var sfn = db.ref(`/booklets/history/${locale}/${papersize}${(argv.d ? 'detailed' : '')}`).push(file.name, function(error) { if(error) { proccess.exit(1);} else { dlog("filename for latest updated in db"); process.exit() } })
+                    Promise.all([sfu,sfn]).then(function() { process.exit(0) })
                   }
                 })
               }
