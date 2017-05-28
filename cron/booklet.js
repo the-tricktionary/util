@@ -145,12 +145,12 @@ if (typeof argv.i18n == "boolean" && argv.i18n) {
           var trick = data[key].subs[subKey]
           if (trick.type == types.en[i]) {
             if (!leveltypes[types.en[i]]) {
-              tex += `\\subsection*{${types[locale][i] || types.en[i]}}\n
+              tex += `\\subsection*{${(types[locale] ? types[locale][i] || types.en[i] : types.en[i])}}\n
                       \\begin{todolist}\n`
               leveltypes[types.en[i]] = true;
             }
             if (argv.d) {
-              tex += `\\item \\textbf{${localize(trick, locale, "name")}}}\\\\\n
+              tex += `\\item \\textbf{${localize(trick, locale, "name")}}\\\\\n
                       ${localize(trick, locale, "description")}\n`
             } else {
               tex += `\\item ${localize(trick, locale, "name")}\n`

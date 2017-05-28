@@ -17,6 +17,7 @@
   "homepage": "https://the-tricktionary.com",
   "dependencies": {
     "@google-cloud/storage": "^0.7.0",
+    "child-process-promise": "^2.2.1",
     "firebase-admin": "^4.1.1",
     "mailgun-js": "^0.8.2",
     "moment": "^2.17.1",
