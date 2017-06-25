@@ -39,6 +39,7 @@ function latexescape(string) {
   string = string.replace(/([~]{1})/gi, '\\textasciitilde ')
   // other chars
   string = string.replace(/([°]{1})/gi, '\\textdegree ')
+  string = string.replace(/([×]{1})/gi, '$\\times$') 
 
   return string
 }

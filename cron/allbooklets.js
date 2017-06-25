@@ -1,6 +1,12 @@
 const admin   = require("firebase-admin");
 const exec    = require("child-process-promise").exec;
 const isolang = require('../data/iso-lang-parse').getLanguageName;
+const argv    = require('yargs')
+               .usage('node $0 [-t|--timer] [-v|--status] [-h|--help]').wrap(require('yargs').terminalWidth())
+               .alias('t', 'timer').number('t')   .describe('t', 'Number of seconds between starting each job') .default('t', 60)
+               .alias('v', 'status').boolean('v') .describe('v', 'Shows the stats dashboard')                   .default('v', false)
+               .alias('h', 'help').help('help')
+               .argv;
 
 const serviceAccount = require("../config/firebase-adminsdk.json");
 const opts = {
@@ -9,7 +15,6 @@ const opts = {
   '-l':  'letter',
   '-dl': 'letterdetailed'
 }
-var debug;
 var n = 0;
 
 function fill(str, len) {
@@ -39,12 +44,9 @@ admin.initializeApp({
   databaseURL: "https://project-5641153190345267944.firebaseio.com"
 });
 
-if(process.argv.indexOf("debug") != -1) {
-  //debug = true;
-  debug = false;
+if(argv.v) {
   function dlog(msg) { console.log(msg) }
 } else {
-  debug = false;
   function dlog() {}
 }
 
@@ -60,7 +62,7 @@ admin.database().ref('/langs').once('value', (snapshot) => {
         statuses[lang][opts[opt]] = "started";
         progress(statuses);
         promises.push(
-          exec(`node ./booklet.js --i18n=${lang} ${opt} ${(debug ? '-v' : '')}`)
+          exec(`node ./booklet.js --i18n=${lang} ${opt}`)
            .then(() => { 
             statuses[lang][opts[opt]] = "finnished";
             progress(statuses)
@@ -70,7 +72,7 @@ admin.database().ref('/langs').once('value', (snapshot) => {
             progress(statuses)
            }))
       }, n)
-      n += 60000;
+      n += argv.t * 1000;
     })
   })
   setTimeout(function() {
