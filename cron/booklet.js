@@ -106,11 +106,11 @@ if (typeof argv.i18n == "boolean" && argv.i18n) {
     dlog(`locale: ${locale}`)
 
     // construct tex file contents
-    var tex = `\\documentclass[12pt]{article}\n
-               \\usepackage[utf8]{inputenc}\n
+    var tex = `\\documentclass[12pt]{article}
+               \\usepackage[utf8]{inputenc}
                \\usepackage{textcomp}
-               \\usepackage[${isolang(locale).toLowerCase()}]{babel}\n
-               \\usepackage{csquotes}\n`
+               \\usepackage[${isolang(locale).toLowerCase()}]{babel}
+               \\usepackage{csquotes}`
 
     if (papersize == "letter" ) {
       tex += '\\usepackage[paperheight=8.5in,paperwidth=5.5in]{geometry}\n'
@@ -118,21 +118,21 @@ if (typeof argv.i18n == "boolean" && argv.i18n) {
       tex += '\\usepackage[a5paper]{geometry}\n'
     }
 
-    tex += `\\usepackage{enumitem,amssymb,tabularx}\n
-            \\newlist{todolist}{itemize}{2}\n
-            \\setlist[todolist]{label=$\\square$,leftmargin=0pt,itemsep=0pt,parsep=0pt}\n
-            \\title{the Tricktionary}\n
-            \\author{}\n
-            \\begin{document}\n
-              \\clearpage\\maketitle\n
-              \\thispagestyle{empty}\n
-              \\vfill\n
-              \\begin{small}\n
-                \\noindent Detailed information about tricks are \\\\\n
-                avilable on the-tricktionary.com or \\\\\n
-                in the Tricktionary\'s android app.\n
-              \\end{small}\n
-              \\pagebreak\n`
+    tex += `\\usepackage{enumitem,amssymb,tabularx}
+            \\newlist{todolist}{itemize}{2}
+            \\setlist[todolist]{label=$\\square$,leftmargin=0pt,itemsep=0pt,parsep=0pt}
+            \\title{the Tricktionary}
+            \\author{}
+            \\begin{document}
+              \\clearpage\\maketitle
+              \\thispagestyle{empty}
+              \\vfill
+              \\begin{small}
+                \\noindent Detailed information about tricks are \\\\
+                avilable on the-tricktionary.com or \\\\
+                in the Tricktionary\'s android app.
+              \\end{small}
+              \\pagebreak`
 
     // tricks
     var keys = Object.keys(data);
@@ -151,10 +151,10 @@ if (typeof argv.i18n == "boolean" && argv.i18n) {
               leveltypes[types.en[i]] = true;
             }
             if (argv.d) {
-              tex += `\\item \\textbf{${localize(trick, locale, "name")}}\\\\\n
-                      ${localize(trick, locale, "description")}\n`
+              tex += `\\item \\textbf{${localize(trick, locale, "name")}}\\\\
+                      ${localize(trick, locale, "description")}`
             } else {
-              tex += `\\item ${localize(trick, locale, "name")}\n`
+              tex += `\\item ${localize(trick, locale, "name")}`
             }
           }
         })
@@ -168,24 +168,24 @@ if (typeof argv.i18n == "boolean" && argv.i18n) {
 
     // speed sheets
     for (var pages = 0; pages < 4; pages++) {
-      tex += `\\section*{Speed event:  }\n
-              \\noindent \\begin{tabularx}{\\linewidth}{|X|X|}\n
-              \\hline\n
-              Date & Count \\\\\n
-              \\hline\n`
+      tex += `\\section*{Speed event:  }
+              \\noindent \\begin{tabularx}{\\linewidth}{|X|X|}
+              \\hline
+              Date & Count \\\\
+              \\hline`
       for (var lines = 0; lines < 26; lines++) {
-        tex += ` & \\\\\n
-                \\hline\n`
+        tex += ` & \\\\
+                \\hline`
       }
-      tex += '\\end{tabularx}\n'
+      tex += '\\end{tabularx}'
       if (pages !== 3) {
-        tex += '\\pagebreak\n'
+        tex += '\\pagebreak'
       }
       if (pages == 3) {
-      tex += `\\vfill\n
-              \\begin{tiny}\n
-              \\copyright the Tricktionary 2016-${moment().format('YYYY')}\n
-              \\end{tiny}\n`
+      tex += `\\vfill
+              \\begin{tiny}
+              \\copyright the Tricktionary 2016-${moment().format('YYYY')}
+              \\end{tiny}`
       }
 
     }
@@ -193,7 +193,7 @@ if (typeof argv.i18n == "boolean" && argv.i18n) {
     tex += '\\end{document}\n'
 
     // tex for booklet version
-    var bookletTex = `\\documentclass[12pt]{article}\n`
+    var bookletTex = `\\documentclass[12pt]{article}`
 
     if(papersize == "letter") {
       bookletTex += '\\usepackage[letterpaper]{geometry}\n'
@@ -201,13 +201,13 @@ if (typeof argv.i18n == "boolean" && argv.i18n) {
       bookletTex += '\\usepackage[a4paper]{geometry}\n'
     }
 
-    bookletTex += `\\usepackage{pdfpages}\n
-                   \\includepdfset{pages=-}\n
-                   \\title{the Tricktionary}\n
-                   \\author{}\n
-                   \\begin{document}\n
-                   \\includepdf[pages=-,landscape,booklet=true]{../data/booklets/raw-${filename}.pdf}\n
-                   \\end{document}\n`
+    bookletTex += `\\usepackage{pdfpages}
+                   \\includepdfset{pages=-}
+                   \\title{the Tricktionary}
+                   \\author{}
+                   \\begin{document}
+                   \\includepdf[pages=-,landscape,booklet=true]{../data/booklets/raw-${filename}.pdf}
+                   \\end{document}`
 
     fs.writeFile('../data/booklets/raw-' + filename + '.tex', tex, function(err) {
       if (err) throw err;
