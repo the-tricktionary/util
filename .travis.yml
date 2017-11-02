@@ -12,8 +12,7 @@ before_script:
 script:
 - cd cron
 - node backup.js
-- node booklet.js -v -d --18n=de
-- node allbooklets.js -t30
+- node allbooklets.js
 notifications:
   email: false
   slack: the-tricktionary:VdZSlFi4J1AHCcQY96RU5dDZ
