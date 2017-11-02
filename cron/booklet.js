@@ -128,9 +128,9 @@ if (typeof argv.i18n == "boolean" && argv.i18n) {
               \\thispagestyle{empty}
               \\vfill
               \\begin{small}
-                \\noindent Detailed information about tricks are \\\\
-                avilable on the-tricktionary.com or \\\\
-                in the Tricktionary\'s android app.
+                \\noindent Detailed information and videos of \\\\
+                the tricks are avilable on the-tricktionary.com \\\\
+                or in the Tricktionary\'s android app.
               \\end{small}
               \\pagebreak`
 
@@ -152,9 +152,14 @@ if (typeof argv.i18n == "boolean" && argv.i18n) {
             }
             if (argv.d) {
               tex += `\\item \\textbf{${localize(trick, locale, "name")}}\\\\
-                      ${localize(trick, locale, "description")}`
+                      ${localize(trick, locale, "description")} \\\\
+                      \\begin{tabularx}{\\linewidth}{Xr}
+                        WJR: ${trick.levels.wjr.level}${(trick.levels.wjr.verified.verified ? '\\checkmark' : '')} & FISAC-IRSF: ${trick.levels.irsf.level}${(trick.levels.irsf.verified.verified ? '\\checkmark' : '')}
+                      \\end{tabularx}
+                      `
             } else {
-              tex += `\\item ${localize(trick, locale, "name")}`
+              tex += `\\item ${localize(trick, locale, "name")}
+                     `
             }
           }
         })

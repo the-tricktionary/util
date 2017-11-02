@@ -15,7 +15,7 @@ function dlog(msg) {
   console.log(msg)
 }
 
-if (fs.existsSync("../data/email/last.json")) {
+if (false && fs.existsSync("../data/email/last.json")) {
   var last = require("../data/email/last.json");
 } else {
   var last;
@@ -199,10 +199,10 @@ function processSnapshot(snapshot, type) {
 
   last[key] = data;
 
-  fs.writeFile('../data/email/last.json', JSON.stringify(last), function(err) {
-    if(err) throw err;
-    dlog("last.json written")
-  })
+  //fs.writeFile('../data/email/last.json', JSON.stringify(last), function(err) {
+  //  if(err) throw err;
+  //  dlog("last.json written")
+  //})
 }
 
 ref.on("child_added",   processSnapshot)
@@ -212,13 +212,13 @@ ref.once("value",       function(snapshot) {
     loaded = true;
     dlog("loaded")
   } else {
-    fs.writeFile('../data/email/last.json', JSON.stringify(snapshot.val()), function(err) {
-      if (err) throw err;
+    //fs.writeFile('../data/email/last.json', JSON.stringify(snapshot.val()), function(err) {
+    //  if (err) throw err;
       last = snapshot.val();
       dlog("init done")
       loaded = true
       dlog("loaded")
-    })
+    //})
   }
 })
 
