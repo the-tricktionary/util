@@ -72,6 +72,7 @@ admin.database().ref('/langs').once('value', (snapshot) => {
             progress(statuses, lang, opts[opt])
            })
            .catch((err) => { 
+            dlog(err)
             statuses[lang][opts[opt]] = "errored";
             progress(statuses, lang, opts[opt])
            }))
