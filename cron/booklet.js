@@ -222,7 +222,7 @@ if (typeof argv.i18n == "boolean" && argv.i18n) {
         dlog("tex booklet saved");
         dlog("generating booklet pdf")
         //exec pdflatex on raw
-        child = exec("/usr/local/texlive/2016/bin/armhf-linux/pdflatex -output-directory=../data/booklets -synctex=1 -interaction=nonstopmode ../data/booklets/raw-" + filename + ".tex", function (error, stdout, stderr) {
+        child = exec("pdflatex -output-directory=../data/booklets -synctex=1 -interaction=nonstopmode ../data/booklets/raw-" + filename + ".tex", function (error, stdout, stderr) {
           dlog('stdout: ' + stdout);
           dlog('stderr: ' + stderr);
           if (error !== null) {
@@ -231,7 +231,7 @@ if (typeof argv.i18n == "boolean" && argv.i18n) {
           if (error === null) {
             dlog("rawbooklet pdf generated");
             dlog("generating booklet pdf");
-            child2 = exec("/usr/local/texlive/2016/bin/armhf-linux/pdflatex -output-directory=../data/booklets -synctex=1 -interaction=nonstopmode ../data/booklets/" + filename + ".tex", function(error, stdout, stderr) {
+            child2 = exec("pdflatex -output-directory=../data/booklets -synctex=1 -interaction=nonstopmode ../data/booklets/" + filename + ".tex", function(error, stdout, stderr) {
               dlog('stdout: ' + stdout);
               dlog('stderr: ' + stderr);
               if (error !== null) {
