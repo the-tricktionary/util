@@ -5,9 +5,9 @@ var storage = require('@google-cloud/storage');
 
 var serviceAccount = require("../config/firebase-adminsdk.json");
 
-if (process.argv[2] == "test") {
+if (true || process.argv[2] == "test") {
   function dlog(msg) { console.log(msg) }
-  dlog("running in debug mode")
+  // dlog("running in debug mode")
 } else {
   function dlog(msg) { return true; }
 }

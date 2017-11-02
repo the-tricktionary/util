@@ -25,17 +25,21 @@ function fill(str, len) {
   }
 }
 
-function progress(obj) {
-  var table = `\x1Bc
+function progress(obj, updatedLang, updatedSize) {
+  if(argv.v) {
+    var table = `\x1Bc
 \t +=====================+===========+=============+===========+=================+ 
 \t |      Language       |    a4     | a4 detailed |  letter   | letter detailed | 
 \t +=====================+===========+=============+===========+=================+ `
-  Object.keys(obj).forEach((lang) => {
-    table += `
+    Object.keys(obj).forEach((lang) => {
+      table += `
 \t | ${fill(isolang(lang), 19)} | ${fill(obj[lang].a4, 9)} | ${fill(obj[lang].a4detailed, 11)} | ${fill(obj[lang].letter, 9)} | ${fill(obj[lang].letterdetailed, 15)} | 
 \t +---------------------+-----------+-------------+-----------+-----------------+ `
-  })
-  dlog(table)
+    })
+    dlog(table)
+  } else {
+    dlog(`${updatedLang} ${updatedSize}: ${obj[updatedLang][updatedSize]}`)
+  }
 }
 
 // initialize firebase app
@@ -44,7 +48,7 @@ admin.initializeApp({
   databaseURL: "https://project-5641153190345267944.firebaseio.com"
 });
 
-if(argv.v) {
+if(true || argv.v) {
   function dlog(msg) { console.log(msg) }
 } else {
   function dlog() {}
@@ -60,16 +64,16 @@ admin.database().ref('/langs').once('value', (snapshot) => {
     Object.keys(opts).forEach((opt) => {
       setTimeout(() => { 
         statuses[lang][opts[opt]] = "started";
-        progress(statuses);
+        progress(statuses, lang, opts[opt]);
         promises.push(
           exec(`node ./booklet.js --i18n=${lang} ${opt}`)
            .then(() => { 
             statuses[lang][opts[opt]] = "finnished";
-            progress(statuses)
+            progress(statuses, lang, opts[opt])
            })
            .catch((err) => { 
             statuses[lang][opts[opt]] = "errored";
-            progress(statuses)
+            progress(statuses, lang, opts[opt])
            }))
       }, n)
       n += argv.t * 1000;
