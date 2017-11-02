@@ -3,6 +3,7 @@ config/*
 data/**/*
 data/*
 !config/*.example.*
+!config/*.enc
 !**/.keep
 
 # Logs
