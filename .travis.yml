@@ -12,7 +12,6 @@ before_script:
 script:
 - cd cron
 - node backup.js
-- node booklet.js -v -d
 - node allbooklets.js -t30
 notifications:
   email: false
