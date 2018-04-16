@@ -80,7 +80,7 @@ function sendEmails(arr) {
   } else if (arr.length == 1) {
     var obj = arr[0];
 
-    var url = 'https://the-tricktionary.com/contact?u=' + obj.user + '&i=' + obj.key;
+    var url = 'https://admin.the-tricktionary.com/contact?u=' + obj.user + '&i=' + obj.key;
 
     html += '<script type="application/ld+json">\n'
     html += '{\n'
@@ -114,7 +114,7 @@ function sendEmails(arr) {
     html += '<ul>\n'
     arr.forEach(function(obj) {
       if (obj.changed == "added" ) {
-        html += '<li><a href="https://the-tricktionary.com/contact?u=' + obj.user + '&i=' + obj.key + '">' + obj.value.type + ' - ' + obj.value.desc.substring(0, 20) + '</a></li>';
+        html += '<li><a href="https://admin.the-tricktionary.com/contact?u=' + obj.user + '&i=' + obj.key + '">' + obj.value.type + ' - ' + obj.value.desc.substring(0, 20) + '</a></li>';
       }
     })
     html += "</ul>"
@@ -122,7 +122,7 @@ function sendEmails(arr) {
     html += "<ul>"
     arr.forEach(function(obj) {
       if (obj.changed == "object change") {
-        html += '<li><a href="https://the-tricktionary.com/contact?u=' + obj.user + '">' + obj.value.type.value + ' - ' + obj.value.desc.value.substring(0, 20) + '</a></li>';
+        html += '<li><a href="https://admin.the-tricktionary.com/contact?u=' + obj.user + '">' + obj.value.type.value + ' - ' + obj.value.desc.value.substring(0, 20) + '</a></li>';
         sendUserEmail(obj)
       }
     })
