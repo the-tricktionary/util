@@ -1,0 +1,11 @@
+${new Array(speed).fill().map(_ => `
+\\section*{Speed event:  }
+\\noindent \\begin{tabularx}{\\linewidth}{|X|X|}
+  \\hline
+  Date & Count \\\\
+  \\hline
+
+  ${new Array(30).fill().map(_ => ` & \\\\
+  \\hline`).join('')}
+\\end{tabularx}\\pagebreak
+`).join('')}

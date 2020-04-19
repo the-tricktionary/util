@@ -1,0 +1,105 @@
+\\documentclass[12pt]{article}
+\\usepackage[utf8]{inputenc}
+\\usepackage{textcomp}
+\\usepackage[${locale}]{babel}
+\\usepackage[default,osfigures,scale=0.95]{opensans}
+\\usepackage{ifoddpage}
+\\usepackage{graphicx}
+\\usepackage{pdfpages}
+\\usepackage{xcolor}
+\\usepackage{afterpage}
+\\usepackage{tabularx}
+\\usepackage{array}
+\\usepackage{pagecolor}
+
+\\usepackage[ISBN=${isbn},SC0]{ean13isbn}\\usepackage{enumitem,amssymb,tabularx}
+
+${papersize === 'letter' ?
+`
+\\usepackage{csquotes}\\usepackage[paperheight=8.5in,paperwidth=5.5in,left=0.75in,right=0.75in,top=0.75in,bottom=0.75in]{geometry}
+\\usepackage[width=6truein,height=9truein,noinfo,pdftex,center]{crop}
+` : `
+\\usepackage{csquotes}\\usepackage[a5paper,left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
+\\usepackage[width=15.2truecm,height=21.6truecm,noinfo,pdftex,center]{crop}
+`}
+
+
+
+\\usepackage[hidelinks]{hyperref}
+
+\\newlist{todolist}{itemize}{2}
+\\setlist[todolist]{label=$\\square$,leftmargin=0pt,itemsep=0pt,parsep=0pt}
+
+\\title{the Tricktionary}
+\\author{}
+
+\\definecolor{ttred}{HTML}{fe3500}
+
+\\begin{document}
+  \\newpagecolor{ttred}
+  \\clearpage
+  \\thispagestyle{empty}
+  \\begin{center}
+    \\color{red}
+    . \\\\
+    \\vspace{1cm}
+  \\end{center}
+
+  \\begin{center}
+    \\color{white}
+    \\includegraphics[keepaspectratio,width=6cm]{600dpi} \\\\
+    \\vspace{1cm}
+    \\begin{Huge}
+      the Tricktionary
+    \\end{Huge}
+  \\end{center}
+  \\pagebreak
+
+  \\clearpage
+  \\thispagestyle{empty}
+  \\begin{small}
+    \\color{white}
+    \\noindent Detailed information and videos of \\\\
+    the tricks are avilable on the-tricktionary.com \\\\
+    or in the Tricktionary's android app.
+  \\end{small}
+  \\vfill
+
+  \\begin{tiny}
+    \\color{white}
+    \\noindent\\copyright { }the Tricktionary 2016-${year} \\\\
+    Released under Creative Commons Attribution 4.0 International License.
+    \\\\
+    https://the-tricktionary.com \\\\
+    contact@the-tricktionary.com \\\\
+    \\\\
+    \\ISBN  \\\\
+    Printed at Mediagården Grafisk Produktion AB, ${year}
+  \\end{tiny}
+  \\pagebreak
+
+  \\restorepagecolor
+
+  ${_tricks}
+
+  ${_speed}
+
+  \\includepdf[pages={1}]{network.pdf}
+
+  \\newpagecolor{ttred}
+  \\clearpage
+  \\thispagestyle{empty}
+  \\begin{center}
+    \\color{ttred}
+    .
+  \\end{center}
+
+  \\vfill
+  \\begin{flushright}
+    \\fcolorbox{white}{white}{%
+    \\begin{minipage}{\\dimexpr0.33\\textwidth-2\\fboxrule-2\\fboxsep\\relax}
+      \\EANisbn
+    \\end{minipage}}
+  \\end{flushright}
+  \\pagebreak
+\\end{document}

@@ -1,0 +1,16 @@
+${levels.map(lev => `
+  \\section*{Level ${lev}}
+  ${types.map(typ => `
+    ${tricks.filter(trick => trick.level === lev && trick.type === typ).length > 0 ? `\\subsection*{${typ}}` : ''}
+
+    ${tricks.filter(trick => trick.level === lev && trick.type === typ).map(trick => `
+      \\noindent\\begin{minipage}{\\linewidth}
+        \\begin{todolist}\\item \\textbf{${trick.name}}\\\\
+          ${detailed ? `${trick.description} \\\\` : ''}
+          ${trick.levels && trick.levels.ijru ? `IJRU: ${trick.levels.ijru.level} ${![false, undefined, null].includes(trick.levels.ijru.verified) ? `\\checkmark` : ''}` : ''}
+        \\end{todolist}
+      \\end{minipage}
+    `).join('')}
+  `).join('')}
+  \\pagebreak
+`).join('')}
